@@ -10,5 +10,6 @@ namespace Chat.Model
     {
         public string Username { get; set; }
         public string UID { get; set; }
+        public string UserImage { get; set; }
     }
 }

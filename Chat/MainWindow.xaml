@@ -6,29 +6,29 @@
         xmlns:local="clr-namespace:Chat"
         xmlns:viewmodel="clr-namespace:Chat.ViewModel"
         mc:Ignorable="d"
-        Title="MainChat" Height="650" MinHeight="650" 
-        MinWidth="1200" 
+        Title="SofChat" Height="650" 
         Width="1200" 
         WindowStartupLocation="CenterScreen" 
         AllowsTransparency="True" 
-        Background="#36393F" 
+        Background="#FF7386A6" 
         WindowStyle="None" 
-        ResizeMode="CanResizeWithGrip">
+        ResizeMode="NoResize">
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Name="ContactColumn" Width="200"/>
+            <ColumnDefinition Name="ChatColumn" Width="700"/>
+            <ColumnDefinition Name="LoginColumn" Width="300"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border Grid.ColumnSpan="2" Background="#252525" MouseDown="Border_MouseDown">
+        <Border Grid.ColumnSpan="3" Background="#252525" MouseDown="Border_MouseDown">
             <Grid HorizontalAlignment="Stretch">
-                <Label Content="SofChat"
+                <Label Content="SoftChat"
                        Foreground="Gray"
                        FontStyle="Italic"/>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
@@ -43,61 +43,81 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <Grid Background="#2F3136" Grid.Row="1">
+        <Grid Background="#2F3136" 
+              Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
-            <Label Content="Контакты"
+            <Label Content="Contacts"
                    VerticalContentAlignment="Center"
-                   Foreground="Gray"
-                   Margin="8 0 0 0"/>
-            <ListView x:Name="lvUsers"
-                      Grid.Row="1" 
-                      ItemsSource="{Binding Users}">
+                   Foreground="White"
+                   FontSize="20"
+                   Margin="8 0 0 0" Background="#FF7386A6"/>
+            <ListView x:Name="LvUser"
+                  Grid.Row="1"
+                  Grid.Column="0" 
+                  ItemsSource="{Binding Users}"
+                  d:ItemsSource="{d:SampleData ItemCount=5}" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Username}"/>
+                        <Border Background="Aqua">
+                            <Grid Width="180"
+                               Height="40"
+                               VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Image Height="30"
+                               Width="20"
+                               VerticalAlignment="Center"
+                               Source="/Images/pp_kosong.png"
+                               Grid.Column="0"/>
+                                
+                                <TextBlock
+                                   VerticalAlignment="Center"
+                                   Grid.Column="1"
+                                   Text="{Binding Username}"/>
+                                <Ellipse 
+                                Width="5"
+                                 Height="5"
+                                 HorizontalAlignment="Right"
+                                 Fill="Green"
+                                 VerticalAlignment="Center"
+                                 Grid.Column="2"/>
+                            </Grid>
+                        </Border>
+                       
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             <StackPanel Grid.Row="2" Orientation="Horizontal"
-                        Background="#292B2F">
-                <Border CornerRadius="25" Width="30" Height="30" Background="#3bff6f"
+                        Background="#FF7386A6">
+                <Border CornerRadius="25" Name="OnlineStatus" Width="30" Height="30" Background="red"
                         Margin="5 0 5 0">
 
                 </Border>
 
                 <StackPanel VerticalAlignment="Center">
-                    <Label Content="{Binding Username}"
+                    <Label Name="LabelUsername" 
+                        Content="{Binding Username}"
                            Foreground="White"
                            
                            FontWeight="SemiBold"
                            Margin="0 -5 0 -5"/>
 
-                    <Label Name="StatusLabel" Content="Offline"
-                           Foreground="Gray"
+                    <Label Name="StatusLabel" 
+                           Content="Offline"
+                           Foreground="White"
+                           VerticalAlignment="Center"
                            FontWeight="SemiBold"
-                           Margin="0 0 0 -15"/>
+                           Margin="0 0 0 0"/>
 
                 </StackPanel>
-                <Button x:Name="Login_btn"
-                Content="Login" 
-                HorizontalAlignment="Center" 
-                Margin="35,0,0,0" 
-                VerticalAlignment="Center" 
-                Width="60"
-                Height="20"
-                Background="#cce7fc" 
-                Foreground="White" 
-                FontSize="12" 
-                FontFamily="Arial" 
-                FontWeight="Bold"
-                BorderBrush="#cce7fc"
-                Click="Login_btn_Click"
-                Command="{Binding ConnectToServerCommand}"
-                />
 
 
             </StackPanel>
@@ -110,27 +130,6 @@
                 <RowDefinition/>
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
-            <Border>
-                <Grid HorizontalAlignment="Stretch" Margin="8">
-                    <Label Content="User"
-                                   Foreground="White"
-                                   FontWeight="Bold"
-                                   Margin="5,0,5,0"
-                                   VerticalAlignment="Center"/>
-                    <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        />
-                    <Image Width="20" Height="20"
-                                   RenderOptions.BitmapScalingMode="Fant"
-                                   Margin="5,0,5,0"
-                                   Source="/Images/img_143375.png"/>
-                </Grid>
-            </Border>
-            <!--<ListView x:Name="lvChat"
-                  Grid.Row="1"
-                  Grid.Column="1" ItemsSource="{Binding Messages}">
-            </ListView>-->
-
             <ListView x:Name="lvChat"
                       Grid.Row="1"
                       Grid.Column="1" 
@@ -160,28 +159,68 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="90"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Row="1" Height="50" Width="990" 
+                <TextBox Name ="TextBoxChatting"  Grid.Row="1" Height="50" 
+                         Margin="5 0 0 0"
+                         Width="620" 
+                         HorizontalAlignment="Left" 
+                         KeyDown="TextBoxChatting_KeyDown"
                          Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" 
                          Grid.ColumnSpan="2"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1"
                             Margin="0 0 16 0">
-                    <Button Content=">" 
+                    <Button FontSize="20" 
+                            Click="Button_Click"
                             Width="40" 
                             Height="40" 
                             Command="{Binding SendMessageCommand}"
                             RenderOptions.BitmapScalingMode="Fant" 
-                            Margin="5 0 5 0"/>
+                            Margin="5 0 5 0"
+                            Background="{x:Null}">
+
+                        <Image Source="/Images/стрелочка.png"/>
+
+                    </Button>
+                    
                 </StackPanel>
             </Grid>
         </Grid>
-        <TextBox x:Name="UsernameTB"
-                 Grid.Row="3"
-                 VerticalAlignment="Bottom"
-                 Height="20"
-                 Width="75"
-                 FontWeight="SemiBold"
-                 Margin="0 0 40 30"
-                 TextChanged="TextBox_TextChanged"
-                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+        <Grid Grid.Column="3" Grid.Row="2" OpacityMask="Black">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Image x:Name="ImgUser"
+               Source="/Images/pp_kosong.png"
+               Margin="20"/>
+            <Button x:Name="BtnChoosePhotoUser"
+                Content="Выбрать фото"
+                Width="100"
+                Height="30"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Margin="10" Background="#FF1E8429" Click="BtnChoosePhotoUser_Click"/>
+
+            <TextBox x:Name="TxbUserName"
+                 Grid.Row="1"
+                 Width="250"
+                 Height="40"
+                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                 VerticalContentAlignment="Center"
+                 Foreground="Gray"
+                 BorderThickness="1"
+                 GotFocus="TxbUserName_GotFocus"
+                 LostFocus="TxbUserName_LostFocus"/>
+            <Button x:Name="BtnLogin"
+                Grid.Row="2"
+                Width="200"
+                Height="30"
+                Content="Login"
+                Background="#FF4DAAF0"
+                Foreground="#FFF"
+                Click="BtnLogin_Click"
+                Command="{Binding ConnectToServerCommand}"/>
+
+        </Grid>
     </Grid>
 </Window>

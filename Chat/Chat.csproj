@@ -10,11 +10,15 @@
   <ItemGroup>
     <None Remove="Images\img_143375.png" />
     <None Remove="Images\pp_kosong.png" />
+    <None Remove="Images\userPhoto.jpg" />
+    <None Remove="Images\стрелочка.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\img_143375.png" />
     <Resource Include="Images\pp_kosong.png" />
+    <Resource Include="Images\userPhoto.jpg" />
+    <Resource Include="Images\стрелочка.png" />
   </ItemGroup>
 
 </Project>
